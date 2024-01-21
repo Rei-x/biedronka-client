@@ -1,5 +1,7 @@
 # Biedronka Client
 
+This project is not affiliated with or endorsed by Biedronka.
+
 Reverse engineered client for mobile Biedronka app.
 
 ```sh

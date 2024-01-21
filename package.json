@@ -1,7 +1,7 @@
 {
   "name": "biedronka-client",
   "version": "1.0.6",
-  "description": "",
+  "description": "Reverse engineered client for mobile Biedronka app",
   "type": "module",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
@@ -21,9 +21,23 @@
     "docs": "typedoc --out docs src",
     "test": "tsx test.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "biedronka",
+    "reverse-engineering",
+    "typescript",
+    "playwright",
+    "client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rei-x/discord-speech-recognition.git"
+  },
+  "homepage": "https://github.com/Rei-x/discord-speech-recognition",
+  "bugs": {
+    "url": "https://github.com/Rei-x/discord-speech-recognition/issues"
+  },
+  "author": "Rei-x",
+  "license": "MIT",
   "dependencies": {
     "jwt-decode": "^4.0.0",
     "readline-sync": "^1.4.10",
