@@ -1,3 +1,4 @@
+import type { LaunchOptions } from "playwright";
 import readline from "readline-sync";
 
 export class SmsTimeoutError extends Error {
@@ -23,10 +24,12 @@ export const login = async ({
     return readline.question("SMS Code: ");
   },
   headless = true,
+  launchOptions,
 }: {
   phoneNumber: string;
   getSmsCode?: () => Promise<string>;
   headless?: boolean;
+  launchOptions?: LaunchOptions;
 }) => {
   const { chromium } = await import("playwright-extra");
   const { default: stealth } = await import("puppeteer-extra-plugin-stealth");
@@ -35,15 +38,13 @@ export const login = async ({
 
   const browser = await chromium.launch({
     headless,
+    ...launchOptions,
   });
 
   const context = await browser.newContext({
     viewport: {
       width: 1920,
       height: 1080,
-    },
-    recordVideo: {
-      dir: "videos/",
     },
     locale: "en-GB",
   });
@@ -69,7 +70,7 @@ export const login = async ({
   await page.getByRole("button", { name: "Next" }).click();
 
   if ((await page.locator("text=Our systems has detected").count()) > 0) {
-    throw new Error("Our systems has detected an unusual traffic");
+    throw new Error("Our systems has detected");
   }
 
   const after = new Date();
