@@ -2,6 +2,10 @@
 
 Reverse engineered client for mobile Biedronka app.
 
+```sh
+npm install biedronka-client
+```
+
 ## Basic example
 
 ```typescript
