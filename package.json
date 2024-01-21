@@ -1,6 +1,6 @@
 {
   "name": "biedronka-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Reverse engineered client for mobile Biedronka app",
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -30,11 +30,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rei-x/discord-speech-recognition.git"
+    "url": "git+https://github.com/Rei-x/biedronka-client.git"
   },
-  "homepage": "https://github.com/Rei-x/discord-speech-recognition",
+  "homepage": "https://github.com/Rei-x/biedronka-client",
   "bugs": {
-    "url": "https://github.com/Rei-x/discord-speech-recognition/issues"
+    "url": "https://github.com/Rei-x/biedronka-client/issues"
   },
   "author": "Rei-x",
   "license": "MIT",
