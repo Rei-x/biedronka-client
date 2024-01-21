@@ -1,6 +1,6 @@
 {
   "name": "biedronka-client",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Reverse engineered client for mobile Biedronka app",
   "type": "module",
   "types": "./dist/index.d.ts",
