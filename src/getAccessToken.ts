@@ -28,13 +28,25 @@ export const login = async ({
   getSmsCode?: () => Promise<string>;
   headless?: boolean;
 }) => {
-  const { chromium } = await import("playwright");
+  const { chromium } = await import("playwright-extra");
+  const { default: stealth } = await import("puppeteer-extra-plugin-stealth");
+
+  chromium.use(stealth());
 
   const browser = await chromium.launch({
     headless,
   });
 
-  const context = await browser.newContext();
+  const context = await browser.newContext({
+    viewport: {
+      width: 1920,
+      height: 1080,
+    },
+    recordVideo: {
+      dir: "videos/",
+    },
+    locale: "en-GB",
+  });
 
   const page = await context.newPage();
 
@@ -49,10 +61,16 @@ export const login = async ({
   await page.goto(
     "https://konto.biedronka.pl/realms/loyalty/protocol/openid-connect/auth?response_type=code&client_id=cma20&redirect_uri=app%3A%2F%2Fcma20.biedronka.pl"
   );
-  await page.getByRole("button", { name: "Accept" }).click();
-  await page.getByLabel(/Phone number/i).fill(phoneNumber);
+  await page.getByRole("button", { name: /Accept/i }).click();
   await page.getByLabel("Remember me").check();
+  await page.getByLabel(/Phone number/i).fill(phoneNumber);
+  await page.getByLabel(/Phone number/i).clear();
+  await page.getByLabel(/Phone number/i).fill(phoneNumber);
   await page.getByRole("button", { name: "Next" }).click();
+
+  if ((await page.locator("text=Our systems has detected").count()) > 0) {
+    throw new Error("Our systems has detected an unusual traffic");
+  }
 
   const after = new Date();
   await page.getByLabel(/SMS Code/i).click();
