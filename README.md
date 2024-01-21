@@ -6,6 +6,12 @@ Reverse engineered client for mobile Biedronka app.
 npm install biedronka-client
 ```
 
+If you also want to login, you need to install `playwright`:
+
+```sh
+npm install playwright && npx playwright install chromium
+```
+
 ## Basic example
 
 ```typescript
