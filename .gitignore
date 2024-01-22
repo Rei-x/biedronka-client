@@ -2,3 +2,5 @@ node_modules
 dist
 docs
 test.ts
+.env
+token.json

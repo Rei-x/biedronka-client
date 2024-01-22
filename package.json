@@ -19,7 +19,7 @@
     "build": "tsup",
     "prepublish": "pnpm build",
     "docs": "typedoc --out docs src",
-    "test": "tsx test.ts"
+    "test": "vitest"
   },
   "keywords": [
     "biedronka",
@@ -55,6 +55,7 @@
     "date-fns": "^3.3.0",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
-    "typedoc": "^0.25.7"
+    "typedoc": "^0.25.7",
+    "vitest": "^1.2.1"
   }
 }

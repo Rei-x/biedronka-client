@@ -24,8 +24,8 @@ export const usersMe = z.object({
     longitude: z.number(),
     opening_hours: z.array(
       z.object({
-        opening_time: z.null(),
-        closing_time: z.null(),
+        opening_time: z.null().or(z.string()),
+        closing_time: z.null().or(z.string()),
         date: z.string(),
         store_is_closed: z.boolean(),
       })

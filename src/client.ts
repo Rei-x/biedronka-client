@@ -10,6 +10,14 @@ import { productsSearch } from "./schemas/productsSearch";
 import { productsMostPurchased } from "./schemas/productsMostPurchased";
 import { storeList } from "./schemas/storeList";
 import { storeDetails } from "./schemas/storeDetails";
+import { dashboardDashboards } from "./schemas/dashboardDashboards";
+import { promosCarouselsDetails } from "./schemas/promosCarouselsDetails";
+import { leafletsList } from "./schemas/leafletsList";
+import { productsStockList } from "./schemas/productsStockList";
+import { productsStockDetails } from "./schemas/productsStockDetails";
+import { loyaltyActions } from "./schemas/loyaltyActions";
+import { storiesList } from "./schemas/storiesList";
+import { offersRevealAndActivate } from "./schemas/offersRevealAndActivate";
 
 const url = "https://api.prod.biedronka.cloud";
 
@@ -26,11 +34,13 @@ export const createBiedronkaClient = ({
   accessToken,
   onRefresh,
   validateResponses = false,
+  printZodErrors = false,
 }: {
   refreshToken: string;
   accessToken: string;
   onRefresh?: (tokens: { access_token: string; refresh_token: string }) => void;
   validateResponses?: boolean;
+  printZodErrors?: boolean;
 }) => {
   let myAccessToken = accessToken;
   let myRefreshToken = refreshToken;
@@ -55,6 +65,7 @@ export const createBiedronkaClient = ({
         status: number;
         ok: false;
         response: Response;
+        zodError?: z.ZodError;
       }
   > => {
     if (Date.now() > jwtDecode<{ exp: number }>(myAccessToken).exp * 1000) {
@@ -80,7 +91,10 @@ export const createBiedronkaClient = ({
       ...init,
       headers: {
         ...init?.headers,
+        "User-Agent": "okhttp/4.12.0",
         Authorization: `Bearer ${myAccessToken}`,
+        "Accept-Language": "en-GB",
+        "Accept-Encoding": "gzip",
       },
     });
 
@@ -105,10 +119,30 @@ export const createBiedronkaClient = ({
     const parsed = schema.safeParse(json);
 
     if (!parsed.success) {
+      if (printZodErrors) {
+        console.error(JSON.stringify(parsed.error.format(), null, 2));
+
+        const fs = await import("fs");
+
+        if (!fs.existsSync("./errors")) {
+          fs.mkdirSync("./errors");
+        }
+
+        fs.writeFileSync(
+          `./errors/error-${endpoint.replace(/\//g, "_")}.json`,
+          JSON.stringify(parsed.error.format(), null, 2)
+        );
+        fs.writeFileSync(
+          `./errors/response-${endpoint.replace(/\//g, "_")}.json`,
+          JSON.stringify(json, null, 2)
+        );
+      }
+
       return {
         status: response.status,
         ok: false,
         response,
+        zodError: parsed.error,
       };
     }
 
@@ -128,11 +162,82 @@ export const createBiedronkaClient = ({
 
       return response;
     },
+    loyaltyActions: async () => {
+      const response = await myFetchClient({
+        endpoint: "loyalty-actions",
+        schema: loyaltyActions,
+      });
+
+      return response;
+    },
+    stories: {
+      list: async () => {
+        const response = await myFetchClient({
+          endpoint: "stories",
+          schema: storiesList,
+        });
+
+        return response;
+      },
+    },
     users: {
       me: async () => {
         const response = await myFetchClient({
           endpoint: "users/me",
           schema: usersMe,
+        });
+
+        return response;
+      },
+    },
+    dashboards: {
+      dashboard: async () => {
+        const response = await myFetchClient({
+          endpoint: "dashboards/dashboard",
+          schema: dashboardDashboards,
+        });
+
+        return response;
+      },
+    },
+    promos: {
+      carousels: {
+        details: async (id: string) => {
+          const response = await myFetchClient({
+            endpoint: `promos/carousels/${id}`,
+            schema: promosCarouselsDetails,
+          });
+
+          return response;
+        },
+      },
+    },
+    offers: {
+      revealAndActivate: async (id: string) => {
+        const response = await myFetchClient({
+          endpoint: `offers/${id}/reveal-and-activate`,
+          schema: offersRevealAndActivate,
+          init: {
+            method: "PATCH",
+          },
+        });
+
+        return response;
+      },
+      checkActivation: async (id: string) => {
+        const response = await myFetchClient({
+          endpoint: `offers/${id}/check-activation`,
+          schema: z.never(),
+        });
+
+        return response;
+      },
+    },
+    leaflets: {
+      list: async () => {
+        const response = await myFetchClient({
+          endpoint: "leaflets",
+          schema: leafletsList,
         });
 
         return response;
@@ -146,6 +251,60 @@ export const createBiedronkaClient = ({
         });
 
         return response;
+      },
+      stock: {
+        list: async ({
+          latitude,
+          longitude,
+          ean,
+          user_store,
+        }: {
+          latitude: number;
+          longitude: number;
+          ean: string;
+          user_store: string;
+        }) => {
+          const response = await myFetchClient({
+            endpoint: "products/stock",
+            schema: productsStockList,
+            init: {
+              method: "POST",
+              body: JSON.stringify({
+                latitude,
+                longitude,
+                ean,
+                user_store,
+              }),
+              headers: {
+                "Content-Type": "application/json; charset=utf-8",
+              },
+            },
+          });
+
+          return response;
+        },
+        details: async ({
+          latitude,
+          longitude,
+          ean,
+          user_store,
+        }: {
+          latitude: number;
+          longitude: number;
+          ean: string;
+          user_store: string;
+        }) => {
+          const response = await myFetchClient({
+            endpoint: `products/stock/${user_store}/${ean}`,
+            schema: productsStockDetails,
+            params: {
+              user_latitude: latitude.toString(),
+              user_longitude: longitude.toString(),
+            },
+          });
+
+          return response;
+        },
       },
       searchByEAN: async ({ ean, store }: { ean: string; store: string }) => {
         const response = await myFetchClient({
