@@ -8,8 +8,8 @@ export const usersMe = z.object({
   is_blik_payment_active: z.boolean(),
   is_show_tobacco: z.boolean(),
   consents: z.object({
-    tobacco_marketing_consent: z.null(),
-    phone_number_pos_authorization_consent: z.boolean(),
+    tobacco_marketing_consent: z.null().or(z.boolean()),
+    phone_number_pos_authorization_consent: z.null().or(z.boolean()),
   }),
   wallets: z.array(
     z.object({ perspectiv_id: z.string(), balance: z.number() })

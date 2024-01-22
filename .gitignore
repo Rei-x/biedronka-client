@@ -4,3 +4,4 @@ docs
 test.ts
 .env
 token.json
+errors

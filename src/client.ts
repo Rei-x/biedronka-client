@@ -18,6 +18,10 @@ import { productsStockDetails } from "./schemas/productsStockDetails";
 import { loyaltyActions } from "./schemas/loyaltyActions";
 import { storiesList } from "./schemas/storiesList";
 import { offersRevealAndActivate } from "./schemas/offersRevealAndActivate";
+import { notificationsList } from "./schemas/notificationsList";
+import { paymentOneClickBlikActivate } from "./schemas/paymentOneClickBlikActivate";
+import { paymentOneClickBlikStatus } from "./schemas/paymentOneClickBlikStatus";
+import { paymentOneClickBlikDeactivate } from "./schemas/paymentOneClickBlikDeactivate";
 
 const url = "https://api.prod.biedronka.cloud";
 
@@ -170,6 +174,69 @@ export const createBiedronkaClient = ({
 
       return response;
     },
+    payment: {
+      oneClickBlik: {
+        status: async () => {
+          const response = await myFetchClient({
+            endpoint: "payment/one-click-blik/status",
+            schema: paymentOneClickBlikStatus,
+          });
+
+          return response;
+        },
+        deactivate: async ({ time_stamp }: { time_stamp: Date }) => {
+          const response = await myFetchClient({
+            endpoint: "payment/one-click-blik/deactivate",
+            schema: paymentOneClickBlikDeactivate,
+            init: {
+              method: "POST",
+              body: JSON.stringify({
+                time_stamp: time_stamp.toISOString(),
+              }),
+              headers: {
+                "Content-Type": "application/json; charset=utf-8",
+              },
+            },
+          });
+
+          return response;
+        },
+        activate: async ({
+          blik_code,
+          time_stamp,
+        }: {
+          blik_code: string;
+          time_stamp: Date;
+        }) => {
+          const response = await myFetchClient({
+            endpoint: "payment/one-click-blik/activate",
+            schema: paymentOneClickBlikActivate,
+            init: {
+              method: "POST",
+              body: JSON.stringify({
+                blik_code,
+                time_stamp: time_stamp.toISOString(),
+              }),
+              headers: {
+                "Content-Type": "application/json; charset=utf-8",
+              },
+            },
+          });
+
+          return response;
+        },
+      },
+    },
+    notifications: {
+      list: async () => {
+        const response = await myFetchClient({
+          endpoint: "notifications",
+          schema: notificationsList,
+        });
+
+        return response;
+      },
+    },
     stories: {
       list: async () => {
         const response = await myFetchClient({
@@ -185,6 +252,34 @@ export const createBiedronkaClient = ({
         const response = await myFetchClient({
           endpoint: "users/me",
           schema: usersMe,
+        });
+
+        return response;
+      },
+
+      meUpdate: async ({
+        tobacco_marketing_consent,
+        phone_number_pos_authorization_consent,
+        is_blik_payment_active,
+      }: {
+        tobacco_marketing_consent: boolean;
+        phone_number_pos_authorization_consent: boolean;
+        is_blik_payment_active: boolean;
+      }) => {
+        const response = await myFetchClient({
+          endpoint: "users/me",
+          schema: usersMe,
+          init: {
+            method: "PATCH",
+            body: JSON.stringify({
+              tobacco_marketing_consent,
+              phone_number_pos_authorization_consent,
+              is_blik_payment_active,
+            }),
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+            },
+          },
         });
 
         return response;
