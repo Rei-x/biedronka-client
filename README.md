@@ -1,4 +1,8 @@
-# Biedronka Client
+<p align="center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/BIEDRONA.JPG/240px-BIEDRONA.JPG" alt="Zdjęcie biedronki" />
+  <h1 align="center">🐞 Biedronka Client 🐞</h1>
+</p>
+
 
 This project is not affiliated with or endorsed by Biedronka.
 
