@@ -14,6 +14,10 @@ If you also want to login, you need to install `playwright` browser:
 npx playwright install chromium
 ```
 
+## Rate limits
+
+Login is rate limited to 10 request per number (I don't think there is any time limit). If you exceed this limit, you will have to wait 30 minutes since the last try.
+
 ## Basic example
 
 ```typescript
