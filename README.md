@@ -28,8 +28,8 @@ import { createBiedronkaClient, login } from "biedronka-client";
 
 const main = async () => {
   const credentials = await login({
-    // Your phone number (only Polish numbers are supported)
-    phoneNumber: "600 700 800",
+    // Your phone number, without spaces (only Polish numbers are supported)
+    phoneNumber: "600700800",
   });
   // You will be prompted for the SMS code in the console
 
