@@ -3,7 +3,6 @@
   <h1 align="center">🐞 Biedronka Client 🐞</h1>
 </p>
 
-
 This project is not affiliated with or endorsed by Biedronka.
 
 Reverse engineered client for mobile Biedronka app.
@@ -29,7 +28,8 @@ import { createBiedronkaClient, login } from "biedronka-client";
 
 const main = async () => {
   const credentials = await login({
-    phoneNumber: "Your phone number",
+    // Your phone number (only Polish numbers are supported)
+    phoneNumber: "600 700 800",
   });
   // You will be prompted for the SMS code in the console
 
