@@ -63,7 +63,6 @@ export const login = async ({
     "https://konto.biedronka.pl/realms/loyalty/protocol/openid-connect/auth?response_type=code&client_id=cma20&redirect_uri=app%3A%2F%2Fcma20.biedronka.pl"
   );
   await page.getByRole("button", { name: /Accept/i }).click();
-  await page.getByLabel("Remember me").check();
   await page.getByLabel(/Phone number/i).fill(phoneNumber);
   await page.getByLabel(/Phone number/i).clear();
   await page.getByLabel(/Phone number/i).fill(phoneNumber);
