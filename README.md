@@ -100,3 +100,16 @@ const main = async () => {
 
 void main();
 ```
+
+## FAQ
+
+### Login doesn't work
+
+Try to pass `headless: false` to `login` function and see what's happening in the browser.
+
+```typescript
+const credentials = await login({
+  phoneNumber: "600700800",
+  headless: false,
+});
+```
