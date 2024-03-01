@@ -21,7 +21,7 @@
     "docs": "typedoc --out docs src",
     "test:dev": "vitest",
     "test:login": "tsx ./src/tests/login.ts",
-    "test": "vitest run"
+    "release": "np --tests false"
   },
   "keywords": [
     "biedronka",
