@@ -20,6 +20,7 @@
     "prepublish": "pnpm build",
     "docs": "typedoc --out docs src",
     "test:dev": "vitest",
+    "test:login": "tsx ./src/tests/login.ts",
     "test": "vitest run"
   },
   "keywords": [
@@ -54,6 +55,7 @@
     "@types/node": "^20.11.5",
     "@types/readline-sync": "^1.4.8",
     "date-fns": "^3.3.0",
+    "dotenv": "^16.4.5",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typedoc": "^0.25.7",
