@@ -3,6 +3,10 @@
   <h1 align="center">🐞 Biedronka Client 🐞</h1>
 </p>
 
+**This project is no longer maintained, please look for other libraries, because there is a high chance that this one doesn't work.**
+
+<hr />
+
 This project is not affiliated with or endorsed by Biedronka.
 
 Reverse engineered client for mobile Biedronka app.
